@@ -14046,7 +14046,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Data-Collection">Data Collection<a class="anchor-link" href="#Data-Collection">&#182;</a></h2><p>To gather the data we needed to create our predictions, we used Spotify’s API and Spotipy, which is a python library that enables us to access the Spotify Web API. It allows for limited data to be pulled about artists, albums, songs, and more. Our songs were gathered from every Spotify playlist to ensure legitimacy of the songs. There were a total of 50 playlists with titles like “Today’s Top Hits”, “All Out 90’s”, and “All Out 60’s”.</p>
 <p>To begin, we had to create our own app through the Spotify developer website and use our personal credentials to pull data. This became problematic quickly as Spotify limits the number of requests that can be made and no amount of sleep was helping. As such, we all quickly became rate limited and were only able to get 50–100 songs before getting blocked. However, we were able to figure out that a list of songs could all be pulled at once and with each request we got a playlist of songs.</p>
-<p><img src="spotifydash.png" alt="alt text" title="Title"></p>
+<p><img src="images/spotifydash.png" alt="alt text" title="Title"></p>
 
 </div>
 </div>
@@ -14089,7 +14089,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ul>
 <p>Duration, danceability, popularity, instrumentalness, and mode (minor or major melodic scale) were also included but did not effect how our models were performed and were therefore removed. Duration made sense that it has no effect on energy as an energetic song could be short or long and still have high or low energy. Danceability and popularity were more shocking however there is slow dancing and shuffling which would be on opposite ends of the energy spectrum and there are definitely sad (low energy) songs that become popular like Adele. Instrumentalness and mode we didn’t expect to have an effect either as both EDM (low instrumental) and rock (high instrumental) can have low or high energy and melodic scale.</p>
 <p>Another alteration to the data we made was to one hot encode the time signature as it’s closer to categorical data than linear and to remove any duplicates. We originally had 3,742 songs that were reduced to 2,824.</p>
-<p><img src="all_songsDF.png" alt="alt text" title="Title"></p>
+<p><img src="images/all_songsDF.png" alt="alt text" title="Title"></p>
 <p>This is what our dataframe looked like after dropping duplicate songs and removing unnecessary features.</p>
 
 </div>
@@ -14103,16 +14103,16 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">&#182;</a></h2><p>So what does the data look like? To start we looked at what some of the high and low energy songs were. “Shape of You” by Ed Sheeran was at the higher end with an energy score of .825 and Bohemian Rhapsody on the lower end with a score of .39. From there, we found the distributions below which revealed that we had more high energy songs in the range of .5-1 than low energy songs.</p>
-<h1 id="-----">-----<a class="anchor-link" href="#-----">&#182;</a></h1><p><img src="energydistribution.png" alt="alt text" title="Title">
-<img src="keydistribution.png" alt="alt text" title="Title">
-<img src="loudnessdistribution.png" alt="alt text" title="Title">
-<img src="acousticnessdistribution.png" alt="alt text" title="Title">
-<img src="livenessdistribution.png" alt="alt text" title="Title">
-<img src="valencedistribution.png" alt="alt text" title="Title">
-<img src="tempodistribution.png" alt="alt text" title="Title">
-<img src="timesignaturedistribution.png" alt="alt text" title="Title"></p>
+<h1 id="-----">-----<a class="anchor-link" href="#-----">&#182;</a></h1><p><img src="images/energydistribution.png" alt="alt text" title="Title">
+<img src="images/keydistribution.png" alt="alt text" title="Title">
+<img src="images/loudnessdistribution.png" alt="alt text" title="Title">
+<img src="images/acousticnessdistribution.png" alt="alt text" title="Title">
+<img src="images/livenessdistribution.png" alt="alt text" title="Title">
+<img src="images/valencedistribution.png" alt="alt text" title="Title">
+<img src="images/tempodistribution.png" alt="alt text" title="Title">
+<img src="images/timesignaturedistribution.png" alt="alt text" title="Title"></p>
 <h1 id="-----">-----<a class="anchor-link" href="#-----">&#182;</a></h1><h1 id="Correlation-Matrix">Correlation Matrix<a class="anchor-link" href="#Correlation-Matrix">&#182;</a></h1><p>Here's a brief introduction to correlation. You have a range of numbers between -1 and 1 that correlate a feature to another feature. In our case, the heatmap we have shows one large occurrence of a negative number, acousticness, with -0.61. This indicates an inverse linear relationship (when X increases on a graph, Y decreases). When a correlation score is very close to 0, it means that there is no linear correlation between the two features. Finally, when you have a positive number, this indicates that the feature has a strong linear correlation with the respective feature. (when X increases, Y does as well. Looking at the heatmap, we see that loudness has the largest correlation with a value of 0.74 indicating a strong correlation with energy.) This is a helpful tool in determining the importance of which features to include in our training set as we want to achieve the highest accuracy score. All the data we used for this correlation matrix was normalized between 0 and 1 to ensure consistency in analysis.</p>
-<p><img src="heatmap.png" alt="alt text" title="Title"></p>
+<p><img src="images/heatmap.png" alt="alt text" title="Title"></p>
 
 </div>
 </div>
@@ -14150,12 +14150,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <p>We tried a plethora of models, including the Deep Neural Network model, the Support Vector Machine, and the Linear Regression model, which ultimately turned out to be our best predictive model.</p>
 <p>When we generated our predictive models, we chose a 60/20/20 data split, meaning 60% was used for training, 20% for development and 20% for testing. We chose this data split because, besides the fact that's the split that was demonstrated in our lecture, we found that with our relatively small dataset, this yielded the most accurate predictions. If our dataset were larger, we would probably use a larger testing set.</p>
 <p>Our Deep Neural Network ran with an extremely poor output. On visual inspection, we can see that the data is unorganized, barely clustered, and our x and y axis had a dramatically different range. On analytical inspection, we can observe that the MSE for both the train set and the dev set is almost 100. We should be expecting a y-range from 0 to 1 but the model came out with a range between -20 and 10 with an outlier at 40. Not only that, but our DNN model was extremely variable and unpredictable which just meant that it was a bad model in trying to use it for our predictions.</p>
-<p><img src="dnnmodel.png" alt="alt text" title="Title"></p>
+<p><img src="images/dnnmodel.png" alt="alt text" title="Title"></p>
 <p>This model had an $R^{2}$ score of -931.87. Or, in other words, it did horribly...</p>
 <p>Our second predictive model was the Support Vector Machine, which did significantly better. Although we produced better clusters, a little bit more of a linear trend and a much lower MSE, with our data we would like to see a much stronger predictive model.</p>
-<p><img src="svrmodel.png" alt="alt text" title="Title"></p>
+<p><img src="images/svrmodel.png" alt="alt text" title="Title"></p>
 <p>This model yielded an $R^{2}$ score of -19.52, which is better but still not great. However, we saw much more success with our Linear Regression model, which performed very well with our numerical data.</p>
-<p><img src="linregmodel.png" alt="alt text" title="Title"></p>
+<p><img src="images/linregmodel.png" alt="alt text" title="Title"></p>
 <p>From both a visual standpoint and an analytical standpoint and an $R^{2}$ score of 0.7, we found this model to be our most effective and most accurate prediction, and we continued using this model to form predictions on other datasets.</p>
 
 </div>
@@ -14180,13 +14180,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>After we had secured an accurate model using the original Spotify songs playlist, we used it to try and predict the energy of playlists created by our group members, excluding songs that may have been duplicated from the original Spotify training set playlist, in an effort to demonstrate the suitability of our model to real world data. Although our predictions weren't perfect, they clearly displayed a linear trend in the data, closely clustered around the mean. For each of our group members, we have:</p>
-<h3 id="Brandi's-Playlist">Brandi's Playlist<a class="anchor-link" href="#Brandi's-Playlist">&#182;</a></h3><p><img src="brandi.png" alt="alt text" title="Title"></p>
+<h3 id="Brandi's-Playlist">Brandi's Playlist<a class="anchor-link" href="#Brandi's-Playlist">&#182;</a></h3><p><img src="images/brandi.png" alt="alt text" title="Title"></p>
 <p>Which our model predicted the energy of with an $R^{2}$ score of 0.54.</p>
-<h3 id="Jake's-Playlist">Jake's Playlist<a class="anchor-link" href="#Jake's-Playlist">&#182;</a></h3><p><img src="jake.png" alt="alt text" title="Title"></p>
+<h3 id="Jake's-Playlist">Jake's Playlist<a class="anchor-link" href="#Jake's-Playlist">&#182;</a></h3><p><img src="images/jake.png" alt="alt text" title="Title"></p>
 <p>Which our model predicted the energy of with an $R^{2}$ score of 0.76, doing significantly better than the previous model.</p>
-<h3 id="Andrew's-Playlist">Andrew's Playlist<a class="anchor-link" href="#Andrew's-Playlist">&#182;</a></h3><p><img src="andrew.png" alt="alt text" title="Title"></p>
+<h3 id="Andrew's-Playlist">Andrew's Playlist<a class="anchor-link" href="#Andrew's-Playlist">&#182;</a></h3><p><img src="images/andrew.png" alt="alt text" title="Title"></p>
 <p>Our model was able to predict the energy of Andrew's Spotify playlist with an $R^{2}$ score of 0.58, aligning more with the first playlist, and finally</p>
-<h3 id="Leilani's-Playlist">Leilani's Playlist<a class="anchor-link" href="#Leilani's-Playlist">&#182;</a></h3><p><img src="Leilani.png" alt="alt text" title="Title"></p>
+<h3 id="Leilani's-Playlist">Leilani's Playlist<a class="anchor-link" href="#Leilani's-Playlist">&#182;</a></h3><p><img src="images/Leilani.png" alt="alt text" title="Title"></p>
 <p>Which had an $R^{2}$ score of 0.57, which is once again closer to the first and third prediction scores.</p>
 <p>For reference, we cross sampled our playlists and the original dataset to see if we had any overlapping songs (as a way to see if it might explain our $R^{2} scores). Brandi had the least with 1, Leilani with 7, Jake with 11, and Andrew with 13. This would partially explain why the $R^{2} scores were higher with the people who had more overlap. Jake has the highest score because his songs span over the entire range (0 to 1) whereas Andrew only spans from around (0.4 to 1).</p>
 
